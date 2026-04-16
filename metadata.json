@@ -1,0 +1,94 @@
+{
+  "entities": {
+    "Book": {
+      "title": "Book",
+      "description": "Information and summary of a book",
+      "type": "object",
+      "properties": {
+        "title": { "type": "string", "description": "The title of the book" },
+        "author": { "type": "string", "description": "The author of the book" },
+        "summary": { "type": "string", "description": "A brief summary of the book" },
+        "fullOverview": { "type": "string", "description": "A detailed, comprehensive overview of the book's themes, plot, and significance" },
+        "genre": { "type": "string", "description": "The genre of the book" },
+        "coverUrl": { "type": "string", "format": "url", "description": "URL to the book cover image" },
+        "audience": { "type": "string", "description": "Description of the target audience (who will like this book)" },
+        "ageRating": { "type": "string", "description": "The age rating of the book (e.g., YA, Adult, 12+)" }
+      },
+      "required": ["title", "author", "summary"]
+    },
+    "CommunityPost": {
+      "title": "Community Post",
+      "description": "A post in the community hub",
+      "type": "object",
+      "properties": {
+        "title": { "type": "string", "description": "The title of the post" },
+        "content": { "type": "string", "description": "The content of the post" },
+        "authorId": { "type": "string", "description": "The UID of the author" },
+        "authorName": { "type": "string", "description": "The display name of the author" },
+        "createdAt": { "type": "string", "format": "date-time", "description": "When the post was created" },
+        "likes": { "type": "number", "description": "Number of likes" }
+      },
+      "required": ["title", "content", "authorId", "authorName", "createdAt"]
+    },
+    "Comment": {
+      "title": "Comment",
+      "description": "A comment on a community post",
+      "type": "object",
+      "properties": {
+        "postId": { "type": "string", "description": "The ID of the post being commented on" },
+        "content": { "type": "string", "description": "The content of the comment" },
+        "authorId": { "type": "string", "description": "The UID of the author" },
+        "authorName": { "type": "string", "description": "The display name of the author" },
+        "createdAt": { "type": "string", "format": "date-time", "description": "When the comment was created" }
+      },
+      "required": ["postId", "content", "authorId", "authorName", "createdAt"]
+    },
+    "UserSubscription": {
+      "title": "User Subscription",
+      "description": "Subscription details for a user",
+      "type": "object",
+      "properties": {
+        "userId": { "type": "string", "description": "The UID of the user" },
+        "plan": { "type": "string", "enum": ["free", "monthly", "annual"], "description": "The subscription plan" },
+        "status": { "type": "string", "enum": ["active", "cancelled", "expired"], "description": "The status of the subscription" },
+        "expiryDate": { "type": "string", "format": "date-time", "description": "When the subscription expires" }
+      },
+      "required": ["userId", "plan", "status"]
+    },
+    "WritingAdvice": {
+      "title": "Writing Advice",
+      "description": "A request for writing advice",
+      "type": "object",
+      "properties": {
+        "userId": { "type": "string", "description": "The UID of the user" },
+        "query": { "type": "string", "description": "The writing advice request" },
+        "response": { "type": "string", "description": "The advice provided" },
+        "createdAt": { "type": "string", "format": "date-time", "description": "When the request was made" },
+        "isPremium": { "type": "boolean", "description": "Whether this is a premium request" }
+      },
+      "required": ["userId", "query", "createdAt"]
+    }
+  },
+  "firestore": {
+    "/books/{bookId}": {
+      "schema": "Book",
+      "description": "Collection of books"
+    },
+    "/posts/{postId}": {
+      "schema": "CommunityPost",
+      "description": "Collection of community posts"
+    },
+    "/posts/{postId}/comments/{commentId}": {
+      "schema": "Comment",
+      "description": "Subcollection of comments for a post"
+    },
+    "/subscriptions/{userId}": {
+      "schema": "UserSubscription",
+      "description": "User subscription information"
+    },
+    "/advice/{adviceId}": {
+      "schema": "WritingAdvice",
+      "description": "Collection of writing advice requests"
+    }
+  }
+}
